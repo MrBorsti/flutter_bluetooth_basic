@@ -13,7 +13,7 @@ dependencies:
   json_annotation: ^4.1.0
   json_serializable: ^5.0.1
   rxdart: ^0.27.2
-  permission_handler: ^2.1.2
+  permission_handler: ^8.1.6
 
 dev_dependencies:
   flutter_test:
