@@ -12,7 +12,7 @@ BluetoothDevice _$BluetoothDeviceFromJson(Map<String, dynamic> json) =>
       address: json['address'] as String,
     )
       ..type = json['type'] as int
-      ..connected = json['connected'] as bool;
+      ..connected = json['connected'] as bool? ?? false;
 
 Map<String, dynamic> _$BluetoothDeviceToJson(BluetoothDevice instance) =>
     <String, dynamic>{

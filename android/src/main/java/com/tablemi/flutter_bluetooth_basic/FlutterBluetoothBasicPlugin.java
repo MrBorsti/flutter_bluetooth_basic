@@ -48,7 +48,6 @@ public class FlutterBluetoothBasicPlugin implements MethodCallHandler, RequestPe
     private static final String TAG = "BluetoothBasicPlugin";
     private final int id = 0;
     private ThreadPool threadPool;
-    public static final int REQUEST_BLUETOOTH_PERMISSIONS = 1001;
     private static final int REQUEST_COARSE_LOCATION_PERMISSIONS = 1451;
     private static final String NAMESPACE = "flutter_bluetooth_basic";
     ActivityPluginBinding binding;
@@ -116,6 +115,7 @@ public class FlutterBluetoothBasicPlugin implements MethodCallHandler, RequestPe
             stateChannel.setStreamHandler(null);
         }
 
+        mBluetoothAdapter = null;
         mBluetoothManager = null;
 
         activity = null;
@@ -139,16 +139,7 @@ public class FlutterBluetoothBasicPlugin implements MethodCallHandler, RequestPe
                 result.success(mBluetoothAdapter != null);
                 break;
             case "isOn":
-                if (ContextCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                            activity,
-                            new String[]{Manifest.permission.BLUETOOTH},
-                            REQUEST_BLUETOOTH_PERMISSIONS);
-                    pendingResult = result;
-                    break;
-                }
-                checkBluetoothEnabled(result);
+                result.success(mBluetoothAdapter.isEnabled());
                 break;
             case "isConnected":
                 result.success(threadPool != null);
@@ -230,11 +221,6 @@ public class FlutterBluetoothBasicPlugin implements MethodCallHandler, RequestPe
         } catch (Exception e) {
             result.error("startScan", e.getMessage(), null);
         }
-    }
-
-    private void checkBluetoothEnabled(Result result) {
-        Log.d(TAG, "check bluetooth enabled");
-        result.success(mBluetoothAdapter.isEnabled());
     }
 
     private void invokeMethodUIThread(final String name, final BluetoothDevice device) {
@@ -349,15 +335,6 @@ public class FlutterBluetoothBasicPlugin implements MethodCallHandler, RequestPe
                 startScan(pendingResult);
             } else {
                 pendingResult.error("no_permissions", "This app requires location permissions for scanning", null);
-                pendingResult = null;
-            }
-            return true;
-        }
-        if (requestCode == REQUEST_BLUETOOTH_PERMISSIONS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                checkBluetoothEnabled(pendingResult);
-            } else {
-                pendingResult.error("no_permissions", "This app requires bluetooth permissions for scanning", null);
                 pendingResult = null;
             }
             return true;
