@@ -1,3 +1,4 @@
+import 'package:flutter_bluetooth_basic/flutter_bluetooth_basic.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'bluetooth_device.g.dart';
@@ -22,7 +23,7 @@ class LineText {
     required this.type, //text,barcode,qrcode,image(base64 string)
     required this.content,
     this.size = 0,
-    this.align = ALIGN_LEFT,
+    this.align = LineText.ALIGN_LEFT,
     this.weight = 0, //0,1
     this.width = 0, //0,1
     this.height = 0, //0,1
