@@ -14,7 +14,6 @@
     <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
-        android:name="io.flutter.app.FlutterApplication"
         android:label="flutter_bluetooth_basic_example"
         android:icon="@mipmap/ic_launcher">
         <activity
